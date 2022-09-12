@@ -27,16 +27,17 @@ export class Deck {
     const fullDeck = suits.flatMap((suit) => symbols.map((symbol) => new Card(suit, symbol)))
     if (!fileInput) {
       this.cards = shuffleCards(fullDeck)
+    } else {
+      const cardsFromFile = fileInput.split(',').map((card) => {
+        const [suit, ...symbol] = Array.from(card.trim())
+        return new Card(suit, symbol.join(''))
+      })
+      const allCardsAreValid = cardsFromFile.every((c) => fullDeck.map((c) => c.toString()).includes(c.toString()))
+      if (!allCardsAreValid || cardsFromFile.length < 4) {
+        throw new Error('Invalid input')
+      }
+      this.cards = cardsFromFile
     }
-    const cardsFromFile = fileInput.split(',').map((card) => {
-      const [suit, ...symbol] = Array.from(card.trim())
-      return new Card(suit, symbol.join(''))
-    })
-    const allCardsAreValid = cardsFromFile.every((c) => fullDeck.map((c) => c.toString()).includes(c.toString()))
-    if (!allCardsAreValid || cardsFromFile.length < 4) {
-      throw new Error('Invalid input')
-    }
-    this.cards = cardsFromFile
   }
 }
 

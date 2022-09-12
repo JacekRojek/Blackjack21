@@ -25,12 +25,22 @@ var __importStar = (this && this.__importStar) || function (mod) {
 exports.__esModule = true;
 var fs = __importStar(require("fs"));
 var game_1 = require("./game");
+var sam = new game_1.Player('sam', function (game) { return game.players[0].score < 17; });
+var dealer = new game_1.Player('dealer', function (game) { return game.players[1].score <= game.players[0].score; });
 var filename = process.argv[2];
-fs.readFile(filename, 'utf8', function (err, data) {
-    if (err)
-        throw err;
-    var sam = new game_1.Player('sam', function (game) { return game.players[0].score < 17; });
-    var dealer = new game_1.Player('dealer', function (game) { return game.players[1].score <= game.players[0].score; });
-    var game = new game_1.Game(new game_1.Deck(data), [sam, dealer]);
+if (!filename) {
+    var game = new game_1.Game(new game_1.Deck(undefined), [sam, dealer]);
     game.start();
-});
+}
+else {
+    fs.readFile(filename, 'utf8', function (err, data) {
+        if (err) {
+            var game = new game_1.Game(new game_1.Deck(undefined), [sam, dealer]);
+            game.start();
+        }
+        else {
+            var game = new game_1.Game(new game_1.Deck(data), [sam, dealer]);
+            game.start();
+        }
+    });
+}

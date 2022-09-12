@@ -26,15 +26,17 @@ var Deck = /** @class */ (function () {
         if (!fileInput) {
             this.cards = (0, shuffleCards_1.shuffleCards)(fullDeck);
         }
-        var cardsFromFile = fileInput.split(',').map(function (card) {
-            var _a = Array.from(card.trim()), suit = _a[0], symbol = _a.slice(1);
-            return new Card(suit, symbol.join(''));
-        });
-        var allCardsAreValid = cardsFromFile.every(function (c) { return fullDeck.map(function (c) { return c.toString(); }).includes(c.toString()); });
-        if (!allCardsAreValid || cardsFromFile.length < 4) {
-            throw new Error('Invalid input');
+        else {
+            var cardsFromFile = fileInput.split(',').map(function (card) {
+                var _a = Array.from(card.trim()), suit = _a[0], symbol = _a.slice(1);
+                return new Card(suit, symbol.join(''));
+            });
+            var allCardsAreValid = cardsFromFile.every(function (c) { return fullDeck.map(function (c) { return c.toString(); }).includes(c.toString()); });
+            if (!allCardsAreValid || cardsFromFile.length < 4) {
+                throw new Error('Invalid input');
+            }
+            this.cards = cardsFromFile;
         }
-        this.cards = cardsFromFile;
     }
     return Deck;
 }());
